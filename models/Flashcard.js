@@ -1,4 +1,4 @@
-import mognoose from "mongoose";
+import mongoose from "mongoose";
 
 const flashcardSchema = new mongoose.Schema({
     userId:{
@@ -12,7 +12,8 @@ const flashcardSchema = new mongoose.Schema({
         required:true,
     },
     cards:[
-        question:{type:String,required:true},
+        {
+            question:{type:String,required:true},
         answer:{type:String,required:true},
         difficulty:{
             type:String,
@@ -30,6 +31,7 @@ const flashcardSchema = new mongoose.Schema({
         isStarred:{
             type:Boolean,
             default:false
+        }
         }
     ]
 },{

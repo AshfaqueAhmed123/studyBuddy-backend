@@ -41,7 +41,8 @@ const quizSchema = new mongoose.Schema({
         }
     ],
     userAnswers:[
-        questionIndex:{
+       {
+         questionIndex:{
             type:Number,
             required:true
         },
@@ -57,6 +58,7 @@ const quizSchema = new mongoose.Schema({
             type:Date,
             default:Date.now()
         }
+       }
     ],
     score:{
         type:Number,
@@ -80,4 +82,4 @@ quizSchema.index({userId:1, documentId:1})
 
 const Quiz = mongoose.model('Quiz', quizSchema)
 
-export defautl Quiz;
+export default Quiz;
