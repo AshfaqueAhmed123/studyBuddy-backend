@@ -3,9 +3,9 @@ import User from "../models/User.js"
 
 // generate JWT 
 const generateToken = (id) => {
-    return jwt.sign({id}), process.env.JWT_SECRET, {
+    return jwt.sign({id}, process.env.JWT_SECRET, {
         expiresIn:process.env.JWT_EXPIARY || "7d"
-    }
+    })
 }
 
 // @desc Register new User 
@@ -26,7 +26,6 @@ export const register = async (req,res,next) => {
                 : "Username already taken"
             })
         }
-
         // create user 
         const user = await User.create({
             username,
@@ -37,7 +36,7 @@ export const register = async (req,res,next) => {
         // generate token
         const token = generateToken(user._id);
 
-        res.status(201).json({
+        return res.status(201).json({
             success: true,
             data:{
                 user:{
@@ -50,8 +49,7 @@ export const register = async (req,res,next) => {
                 token
             },
             message: "User registered successfully"
-        },
-    )
+        })
 
     } catch (error) {
         next(error)
@@ -67,6 +65,7 @@ export const login = async (req,res,next) => {
     try {
         const {email, password} = req.body;
 
+        console.log(password)
         // validate input
         if(!email || !password){
             return res.status(400).json({
@@ -74,43 +73,42 @@ export const login = async (req,res,next) => {
                 error:"Please provide email and password",
                 statusCode:400,
             })
-            // check for user [include password for corrcetion]
-            const user = await User.findOne({email}).select("+password")
-
-            if(!user){
-                return res.status(401).json({
-                    success:false,
-                    error:"invalid credentials",
-                    statusCode:401,
-                })
-            }
-
-            // check password
-            const isMtach = await user.matchPassword(password);
-
-            if(!isMatch){
-                return res.status(401).json({
-                    success:false,
-                    error:"invalid credentials",
-                    statucCode:401,
-                })
-            }
-
-            // generate token 
-            const token = generateToken(user._id);
-
-            res.status(200).json({
-                success:true,
-                user:{
-                    id:user._id,
-                    username:user.username,
-                    email:user.email,
-                    profileImage:user.profileImage,
-                },
-                token,
-                message:"login sucessfull"
+        }
+        // check for user [include password for correction]
+        const user = await User.findOne({email}).select("+password")
+        if(!user){
+            return res.status(401).json({
+                success:false,
+                error:"invalid credentials",
+                statusCode:401,
             })
         }
+
+        // check password
+        const isMatch = await user.matchPassword(password);
+
+        if(!isMatch){
+            return res.status(401).json({
+                success:false,
+                error:"invalid credentials",
+                statusCode:401,
+            })
+        }
+
+        // generate token 
+        const token = generateToken(user._id);
+
+        return res.status(200).json({
+            success:true,
+            user:{
+                id:user._id,
+                username:user.username,
+                email:user.email,
+                profileImage:user.profileImage,
+            },
+            token,
+            message:"login successful"
+        })
     } catch (error) {
         next(error)
     }
@@ -124,7 +122,7 @@ export const login = async (req,res,next) => {
 export const getProfile = async (req,res,next) => {
     try {
         const user = await User.findById(req.user._id)
-        res.statud(200).json({
+        res.status(200).json({
             success:true,
             data:{
                 id:user._id,

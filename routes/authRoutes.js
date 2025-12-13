@@ -26,11 +26,11 @@ const loginValidation = [
 
 // public routes
 router.post("/register",registerValidation,register)
-router.route("/login",loginValidation,login)
+router.post("/login",loginValidation,login)
 
 // protected routes 
-router.route("/profile", protect, getProfile) 
-router.route("/profile", protect, updateProfile)
-router.route("/change-password", protect, changePassword)
+router.get("/profile", protect, getProfile) 
+router.put("/profile", protect, updateProfile)
+router.put("/change-password", protect, changePassword)
 
 export default router;

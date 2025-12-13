@@ -12,7 +12,7 @@ import documentRoutes from "./routes/documentRoutes.js"
 import flashcardRoutes from "./routes/flashcardRoutes.js"
 import aiRoutes from "./routes/aiRoutes.js"
 import quizRoutes from "./routes/quizRoutes.js"
-import progrssRoutes from "./routes/progressRoutes.js"
+import progressRoutes from "./routes/progressRoutes.js"
 
 
 
@@ -49,7 +49,7 @@ app.use("/api/documents", documentRoutes)
 app.use("/api/flashcard", flashcardRoutes)
 app.use("/api/aiRoutes", aiRoutes)
 app.use("/api/quizzes", quizRoutes)
-app.use("/api/progress", progrssRoutes)
+app.use("/api/progress", progressRoutes)
 
 
 
