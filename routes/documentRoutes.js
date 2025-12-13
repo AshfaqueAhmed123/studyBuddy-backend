@@ -12,6 +12,8 @@ import upload from "../config/multer.js"
 
 const router = express.Router()
 
+router.use(protect)
+
 router.post("/upload", upload.single('file'), uploadDocument)
 router.get("/", getDocuments)
 router.get("/:id", getDocument)

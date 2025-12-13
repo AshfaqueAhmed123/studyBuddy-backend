@@ -21,6 +21,7 @@ export const uploadDocument = async (req, res, next) => {
             });
         }
 
+
         const { title } = req.body;
 
         if (!title) {
@@ -40,7 +41,7 @@ export const uploadDocument = async (req, res, next) => {
         const document = await Document.create({
             userId: req.user._id,
             title,
-            filename: req.file.originalname,
+            fileName: req.file.originalname,
             filePath: fileUrl, // Store the URL instead of the local path
             fileSize: req.file.size,
             status: 'processing'
@@ -70,7 +71,7 @@ export const uploadDocument = async (req, res, next) => {
 const processPDF = async (documentId, filePath) => {
     try {
         const { text } = await extractTextFromPDF(filePath);
-
+        console.log(text)
         // Create chunks
         const chunks = chunkText(text, 500, 50);
 
@@ -96,7 +97,7 @@ const processPDF = async (documentId, filePath) => {
 // @route GET /api/documents
 // @access private
 
-export const getDocuments = async (req, next) => {
+export const getDocuments = async (req,res, next) => {
     try {
         const documents = await Document.aggregate([
             {

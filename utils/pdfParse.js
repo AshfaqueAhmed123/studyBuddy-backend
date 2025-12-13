@@ -12,10 +12,11 @@ extract text from PDF file
 export const extractTextFromPDF = async (filePath)=>{
     try {
         const dataBuffer = await fs.readFile(filePath)
+        console.log(dataBuffer)
         // pdf-parse expects a unit8Array, not a buffer
         const parser = new PDFParse(new Uint8Array(dataBuffer))
-        const data = parser.getText();
-
+        const data = await parser.getText();
+        console.log(`data : ${data.text}`)
         return {
             text:data.text,
             numPage:data.numpages,
@@ -26,3 +27,4 @@ export const extractTextFromPDF = async (filePath)=>{
         throw new Error("failed to extract text from PDF")
     }
 }
+
