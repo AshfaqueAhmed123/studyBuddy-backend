@@ -156,9 +156,10 @@ export const getDocuments = async (req,res, next) => {
 export const getDocument = async (req, res, next) => {
     try {
         const document = await Document.findOne({
-            id:req.params.id,
-            user:req.user._id
+            _id:req.params.id,
+            userId:req.user._id
         })
+        
         if(!document){
             return res.status(404).json({
                 success:false,
@@ -167,12 +168,12 @@ export const getDocument = async (req, res, next) => {
             })
         }
         // get counts of associated flashcards and quizzes
-        const flashcardCount = await flashcard.countDocument({documentId:document._id, userId:req.user._id})
+        const flashcardCount = await Flashcard.countDocuments({documentId:document._id, userId:req.user._id})
         const quizCount = await Quiz.countDocuments({documentId:document._id,userId:req.user._id})
 
         // update last accessed 
         document.lastAccessed = Date.now()
-        await Document.save()
+        await document.save()
         // combine document data with counts
         const documentData = document.toObject();
         documentData.flashcardCount = flashcardCount;
@@ -186,6 +187,8 @@ export const getDocument = async (req, res, next) => {
         next(error)
     }
 }
+
+
 
 
 
