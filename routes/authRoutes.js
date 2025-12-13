@@ -25,7 +25,7 @@ const loginValidation = [
 ]
 
 // public routes
-router.route("/register",registerValidation,register)
+router.post("/register",registerValidation,register)
 router.route("/login",loginValidation,login)
 
 // protected routes 
