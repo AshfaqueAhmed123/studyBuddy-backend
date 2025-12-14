@@ -95,8 +95,9 @@ export const submitQuiz = async (req,res,next) => {
         })
 
         // calculate score
-        const score = Math.round((correctCount / quiz.totalQuestions) * 100)
+        const score = Math.round((correctCount / quiz.totalQuestions) * 100) || 0
 
+        console.log(score)
         // update quiz
         quiz.userAnswers = userAnswers;
         quiz.score = score;
@@ -157,7 +158,7 @@ export const getQuizResults = async (req,res,next) => {
                 correctAnswer:question.correctAnswer,
                 selectedAnswer:userAnswer?.selectedAnswer || null,
                 isCorrect: userAnswer?.isCorrect || false,
-                explanation:question.explaination
+                explanation:question.explanation
             }
         })
 

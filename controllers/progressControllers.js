@@ -19,7 +19,7 @@ export const getDashboard = async (req,res,next) => {
         let starredFlashcards = 0;
         
         flashcardSets.forEach((set)=>{
-            totalFlashCards += set.cards.length;
+            totalFlashcards += set.cards.length;
             reviewedFlashcards += set.cards.filter(c => c.reviewCount > 0).length;
             starredFlashcards += set.cards.filter(c => c.isStarred > 0).length;
         })
@@ -34,7 +34,7 @@ export const getDashboard = async (req,res,next) => {
         const recentQuizzes = await Quiz.find({userId})
         .sort({createdAt:-1})
         .limit(5)
-        .populate('documentId','title')
+        .populate('document','title')
         .select('title score totalQuestions completedAt')
 
         // study streak 
