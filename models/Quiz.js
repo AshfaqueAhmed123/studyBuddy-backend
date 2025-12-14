@@ -29,7 +29,7 @@ const quizSchema = new mongoose.Schema({
                 type: String,
                 required: true,
             },
-            explaination: {
+            explanation: {
                 type: String,
                 default:""
             },
@@ -68,7 +68,7 @@ const quizSchema = new mongoose.Schema({
         type:Number,
         required:true
     },
-    compeletedAt:{
+    completedAt:{
         type:Date,
         default:null
     }

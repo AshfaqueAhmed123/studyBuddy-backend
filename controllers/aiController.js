@@ -35,6 +35,7 @@ export const generateFlashCards = async  (req,res,next) => {
             parseInt(count)
         )
 
+
         // save to database
         const flashcards = await Flashcard.create({
             userId:req.user._id,
@@ -82,7 +83,7 @@ export const generateQuiz = async (req, res, next) => {
             })
         }
 
-        // Generate Quiz using gemni
+        // Generate Quiz using gemini
         const questions = await geminiService.generateQuiz(
             document.extractedText,
             parseInt(numQuestions)
@@ -92,7 +93,7 @@ export const generateQuiz = async (req, res, next) => {
 
         const quiz = await Quiz.create({
             userId:req.user._id,
-            documentId:document._id,
+            document:document._id,
             title: title || `${document.title} - Quiz`,
             questions:questions,
             totalQuestions:questions.length,

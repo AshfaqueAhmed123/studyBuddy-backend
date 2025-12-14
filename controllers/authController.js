@@ -65,7 +65,6 @@ export const login = async (req,res,next) => {
     try {
         const {email, password} = req.body;
 
-        console.log(password)
         // validate input
         if(!email || !password){
             return res.status(400).json({
@@ -161,11 +160,9 @@ export const updateProfile = async (req,res,next) => {
                 email: user.email,
                 profileImage: user.profileImage
             },
-            message:"profile updated successfully"
-        })
-
-    } catch (error) {
-        next(error)
+            message:"profile updated successfully"})
+    }catch(error){
+        return res.status(500).json({error:error.message})
     }
 }
 
@@ -174,6 +171,7 @@ export const updateProfile = async (req,res,next) => {
 // @access private
 
 export const changePassword = async (req,res,next) => {
+    console.log("hitting")
     try {
         const { currentPassword, newPassword } = req.body;
 

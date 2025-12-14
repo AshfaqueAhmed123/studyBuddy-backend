@@ -13,9 +13,9 @@ if (!process.env.GEMINI_API_KEY) {
 export const generateFlashCards = async (text, count = 10) => {
     const prompt = `Generate exactly ${count} educational flashcards from the following text.
     Format each flashcard as:
-    Q : [CLEAR,specific question]
-    A : [Concise, accurate answer]
-    D: [Difficulty level :  easy,medium or hard ]
+    Q:[CLEAR,specific question]
+    A:[Concise, accurate answer]
+    D:[Difficulty level :  easy,medium or hard ]
 
     Separate each flashcard with "---"
 
@@ -25,10 +25,12 @@ export const generateFlashCards = async (text, count = 10) => {
 
     try {
 
-        const response = await ai.models.generateContent({
-            model: "gemini-2.5-flash-lite",
-            contents: prompt
-        })
+        const response = await ai.models.generateContent(
+            {
+                model: "gemini-2.5-flash-lite",
+                contents: prompt,
+            }
+        )
 
         const generatedText = response.text;
 
@@ -92,24 +94,25 @@ export const generateQuiz = async (text, numQuestions = 5) => {
     try {
         const response = await ai.models.generateContent({
             model: "gemini-2.5-flash-lite",
-            content: prompt
+            contents: prompt
         })
 
         const generatedText = response.text;
+        console.log("generatedText ::", generatedText)
 
         const questions = [];
         const questionBlocks = generatedText.split('---').filter(q => q.trim())
 
         for (const block of questionBlocks) {
             const lines = block.trim().split('\n')
-            let questions = '', options = [], correctAnswer = '', explanation = '', difficulty = "medium"
+            let question = '', options = [], correctAnswer = '', explanation = '', difficulty = "medium"
 
-            for (const block of questionBlocks) {
+            for (const line of lines) {
                 const trimmed = line.trim()
                 if (trimmed.startsWith('Q:')) {
                     question = trimmed.substring(2).trim()
                 } else if (trimmed.match(/^O\d:/)) {
-                    questions.push(trimmed.substring(3).trim())
+                    options.push(trimmed.substring(3).trim())
                 } else if (trimmed.startsWith("C:")) {
                     correctAnswer = trimmed.substring(2).trim()
                 } else if (trimmed.startsWith("E:")) {
@@ -121,7 +124,7 @@ export const generateQuiz = async (text, numQuestions = 5) => {
                     }
                 }
             }
-            if (questions && options.length === 4 && correctAnswer) {
+            if (question && options.length === 4 && correctAnswer) {
                 questions.push({ question, options, correctAnswer, explanation, difficulty })
             }
 
