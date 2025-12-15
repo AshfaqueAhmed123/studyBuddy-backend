@@ -56,6 +56,11 @@ app.use("/api/progress", progressRoutes)
 
 app.use(errorHandler)
 
+app.use(
+  "/uploads",
+  express.static(path.join(__dirname, "/config/uploads"))
+);
+
 // 404 handler 
 app.use((req,res)=>{
     res.status(404).json({
