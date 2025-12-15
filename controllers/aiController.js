@@ -204,7 +204,7 @@ export const chat = async (req, res, next) => {
         const answer = await geminiService.chatWithContext(question, relevantChunks)
 
         // save conversation
-        chatHistory.message.push(
+        chatHistory.messages.push(
             {
             role:"user",
             content:question,
@@ -289,7 +289,7 @@ export const explainConcept = async (req, res, next) => {
 
 export const getChatHistory = async (req, res, next) => {
     try {
-        const {documentId } = req.body
+        const documentId = req.params.documentId
         if(!documentId){
             return res.status(404).json({
                 success:false,

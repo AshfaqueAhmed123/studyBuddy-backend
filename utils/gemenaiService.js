@@ -169,10 +169,12 @@ export const generateSummary = async (text) => {
 
 // chat with document context
 export const chatWithContext = async (question, chunks) => {
-    const context = chunks.map((c,i)=> `Chunk ${i+1}\n${c.content}`.join('\n\n'))
+    // const context = chunks.map((c,i)=> `Chunk ${i+1}\n${c.content}`.join('\n\n'))
+    const context = chunks.map((c, i) => `Chunk ${i + 1}\n${c.content}`).join('\n\n');
+
 
     const prompt = `
-    Based on the following context from the document, Analyze the context and answer the user's question if the answer is not in the context, say no
+    Based on the following context from the document, Analyze the context and answer the user's question if the answer is not in the context, say that this information is not included in document
 
     Context:${context}
 
