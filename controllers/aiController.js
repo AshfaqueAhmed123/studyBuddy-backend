@@ -276,7 +276,7 @@ export const explainConcept = async (req, res, next) => {
             data:{
                 concept,
                 explanation,
-                relevantChunks: relevantChunks.mao(c => c.chunkIndex) 
+                relevantChunks: relevantChunks.map(c => c.chunkIndex) 
             },
             message:"explanation generated successfully"
         })
