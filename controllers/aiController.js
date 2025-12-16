@@ -298,7 +298,7 @@ export const getChatHistory = async (req, res, next) => {
             })
         }
 
-        const chatHistory = await ChatHistory.findOne({
+        const chatHistory = await ChatHistory.find({
             userId:req.user._id,
             documentId:documentId,
         }).select("messages") // only retrieve the messages array
@@ -314,7 +314,7 @@ export const getChatHistory = async (req, res, next) => {
 
         res.status(200).json({
             success:true,
-            data:chatHistory.messages,
+            data:chatHistory,
             message:"chat history retrieved successfully"
         })
     } catch (error) {
