@@ -4,16 +4,16 @@ export const getQuizzes = async (req,res,next) => {
     try {
         const quizzes = await Quiz.find({
             userId:req.user._id,
-            documentId:req.params.documentId,
+            document:req.params.documentId,
         })
-        .populate('documentId', 'title fileName')
+        .populate('document', 'title fileName')
         .sort({createdAt:-1})
 
         res.status(200).json({
-            success:true,
-            count:quizzes.length,
-            data:quizzes
-        })
+            success: true,
+            count: quizzes.length,
+            quiz: quizzes
+        });
     } catch (error) {
         next(error)
     }
