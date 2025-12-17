@@ -168,7 +168,7 @@ export const getQuizResults = async (req,res,next) => {
                 quiz:{
                     id:quiz._id,
                     title:quiz.title,
-                    documentId:quiz.documentId,
+                    document:quiz.document,
                     score:quiz.score,
                     totalQuestions:quiz.totalQuestions,
                     completedAt:quiz.completedAt
