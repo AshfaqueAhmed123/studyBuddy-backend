@@ -76,41 +76,6 @@ export const reviewFlashcard = async (req,res,next) => {
     }
 }
 
-// export const toggleStarFlashcard = async (req,res,next) => {
-//     try {
-//         const flashcardSet = await Flashcard.findOne({
-//             'card.id' : req.params.cardId,
-//             userId:req.user._id
-//         })
-//         if(!flashcardSet){
-//             return res.status(404).json({
-//                 success:false,
-//                 error:"flashcardSet not found",
-//                 statusCode:404
-//             })
-//         }
-//         const cardIndex = flashcardSet.cards.findIndex(card => card._id.toString() === req.params.cardId)
-
-//         if(cardIndex === -1){
-//             return res.status(404).json({
-//                 success:False,
-//                 error:"card not found in set",
-//                 statusCode:404
-//             })
-//         }
-//         // toggle star 
-//         flashcardSet.cards[cardIndex].isStarred = !flashcardSet.cards[cardIndex].isStarred
-//         await flashcardSet.save()
-
-//         res.status(200).json({
-//             success:true,
-//             data:flashcardSet,
-//             message: `flashCard ${flashcardSet.cards[cardIndex].isStarred ? 'starred' : 'unstarred'} `
-//         })
-//     } catch (error) {
-//         next(error)
-//     }
-// }
 export const toggleStarFlashcard = async (req, res, next) => {
   try {
     const flashcardSet = await Flashcard.findOne({
