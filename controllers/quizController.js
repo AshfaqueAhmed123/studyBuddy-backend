@@ -160,45 +160,44 @@ export const submitQuiz = async (req, res, next) => {
         let correctCount = 0;
         let userAnswers = [];
 
-        // answers.forEach(answer => {
-        //     const { questionIndex, selectedAnswer } = answer;
-        //     if (questionIndex < quiz.questions.length) {
-        //         const question = quiz.questions[questionIndex]
-
-        //         // Compare string values safely
-        //         const isCorrect = question.correctAnswer.trim().toLowerCase() === selectedAnswer.trim().toLowerCase();
-
-        //         if (isCorrect) correctCount++;
-
-        //         userAnswers.push({
-        //             questionIndex,
-        //             selectedAnswer,
-        //             isCorrect,
-        //             answeredAt: new Date()
-        //         })
-        //     }
-        // })
-
+        
         answers.forEach(answer => {
             const { questionIndex, selectedAnswer } = answer;
-            if (questionIndex < quiz.questions.length) {
-                const question = quiz.questions[questionIndex];
 
-                // remove numeric prefix from correctAnswer
-                const correctAnswerText = question.correctAnswer.split(":").slice(1).join(":").trim();
+            if (questionIndex >= quiz.questions.length) return;
 
-                const isCorrect = correctAnswerText.toLowerCase() === selectedAnswer.trim().toLowerCase();
+            const question = quiz.questions[questionIndex];
 
-                if (isCorrect) correctCount++;
+            const match = question.correctAnswer.match(/\d+/);
 
+            if (!match) {
                 userAnswers.push({
                     questionIndex,
                     selectedAnswer,
-                    isCorrect,
+                    isCorrect: false,
                     answeredAt: new Date()
-                })
+                });
+                return;
             }
-        })
+
+            const correctOptionIndex = parseInt(match[0], 10) - 1;
+            const correctOptionText = question.options[correctOptionIndex];
+
+            const isCorrect =
+                typeof selectedAnswer === "string" &&
+                typeof correctOptionText === "string" &&
+                selectedAnswer.trim() === correctOptionText.trim();
+
+            if (isCorrect) correctCount++;
+
+            userAnswers.push({
+                questionIndex,
+                selectedAnswer,
+                isCorrect,
+                answeredAt: new Date()
+            });
+        });
+
 
         // calculate score
         const score = Math.round((correctCount / quiz.totalQuestions) * 100) || 0
